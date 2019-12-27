@@ -61,19 +61,6 @@ def create_content():
             # range slider with start date and end date
             html.Div(
                 children=[
-                    dcc.RangeSlider(
-                        id="year-slider",
-                        min=1990,
-                        max=2018,
-                        value=[2010, 2015],
-                        marks={(i): f"{i}" for i in range(1990, 2018, 2)},
-                    )
-                ],
-                style={"margin-bottom": 20},
-            ),
-            html.Hr(),
-            html.Div(
-                children=[
                     dcc.Graph(
                         id="graph-0",
                         figure={
@@ -81,50 +68,23 @@ def create_content():
                                 {
                                     "x": [1, 2, 3],
                                     "y": [4, 1, 2],
-                                    "type": "bar",
-                                    "name": "SF",
+                                    "type": "line",
+                                    "name": "Chart name 1",
                                 },
                                 {
                                     "x": [1, 2, 3],
                                     "y": [2, 4, 5],
-                                    "type": "bar",
-                                    "name": u"Montréal",
+                                    "type": "line",
+                                    "name": u"Chart name 2",
                                 },
                             ],
-                            "layout": {"title": "Dash Data Visualization"},
+                            "layout": {"title": "Dash Data Line Visualization"},
                         },
                     )
                 ],
                 className="row",
                 style={"margin-bottom": 20},
             ),
-            html.Div(
-                children=[
-                    html.Div(dcc.Graph(id="graph-1"), className="six columns"),
-                    html.Div(
-                        dcc.Markdown(
-                            """
-                        This is a markdown description created with a Dash Core Component.
-                        
-                        > A {number} days of training to develop.
-                        > Ten {number} days of training to polish.
-                        >
-                        > — Miyamoto Musashi
-
-                        ***
-                        """.format(
-                                number="thousand"
-                            ).replace(
-                                "  ", ""
-                            )
-                        ),
-                        className="six columns",
-                    ),
-                ],
-                className="row",
-                style={"margin-bottom": 20},
-            ),
-            html.Hr(),
         ],
         id="content",
         style={"width": "100%", "height": "100%"},
