@@ -1,4 +1,7 @@
+from functools import partial
 import os
+from random import randint
+
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.plotly as py
@@ -58,7 +61,7 @@ def create_header():
 def create_content():
     content = html.Div(
         children=[
-            # range slider with start date and end date
+            # Line chart example
             html.Div(
                 children=[
                     dcc.Graph(
@@ -85,12 +88,17 @@ def create_content():
                 className="row",
                 style={"margin-bottom": 20},
             ),
+            dcc.Graph(id='live-update-chart'),
+            dcc.Interval(
+                id='interval-component',
+                interval=2 * 1000,  # in milliseconds
+                n_intervals=0
+            )
         ],
         id="content",
         style={"width": "100%", "height": "100%"},
     )
     return content
-
 
 def create_footer():
     footer_style = {"background-color": theme["background-color"], "padding": "0.5rem"}
@@ -138,7 +146,28 @@ for css in external_css:
     app.css.append_css({"external_url": css})
 
 
-# TODO: callbacks
+@app.callback(Output('live-update-chart', 'figure'),
+              [Input('interval-component', 'n_intervals')])
+def update_plot(n):
+    number_of_coordinates = 10
+    parametrized_randint = partial(randint, 0, number_of_coordinates + 1)
+    x_coordinates = range(number_of_coordinates + 1)
+    traces = [
+        {
+            "x": list(x_coordinates),
+            "y": [parametrized_randint() for _ in x_coordinates],
+            "type": "bar",
+            "name": "Chart name 1",
+        },
+        {
+            "x": list(x_coordinates),
+            "y": [parametrized_randint() for _ in x_coordinates],
+            "type": "bar",
+            "name": "Chart name 2",
+        },
+    ]
+    return go.Figure(data=traces)
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
