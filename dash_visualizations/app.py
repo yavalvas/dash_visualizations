@@ -10,7 +10,6 @@ from flask import Flask
 from dash import Dash
 from dash.dependencies import Input, Output, State
 from dotenv import load_dotenv
-from exceptions import ImproperlyConfigured
 
 DOTENV_PATH = os.path.join(os.path.dirname(__file__), ".env")
 load_dotenv(DOTENV_PATH)
@@ -28,7 +27,7 @@ else:
 try:
     py.sign_in(os.environ["PLOTLY_USERNAME"], os.environ["PLOTLY_API_KEY"])
 except KeyError:
-    raise ImproperlyConfigured("Plotly credentials not set in .env")
+    raise Exception("Plotly credentials not set in .env")
 
 app_name = "dash_visualizations"
 server = Flask(app_name)
